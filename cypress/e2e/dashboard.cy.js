@@ -95,7 +95,7 @@ describe("Dashboard", () => {
     });
   });
 
-  it("Verify that the dashboard List view is functional", () => {
+  it("Verify that the dashboard List view gets expanded/collapsed on clicking the down and up arrow", () => {
     cy.get(".list-section").within(() => {
       cy.get(".list-names")
         .children(".accordion-item")
@@ -146,7 +146,7 @@ describe("Dashboard", () => {
     });
   });
 
-  it("Verify that task details can be deleted.", () => {
+  it("Verify that task details can be deleted on clicking the [delete] button", () => {
     cy.get(".list-names").within(() => {
       cy.get(":nth-child(1) > .accordion-header").click();
       cy.get(".accordion-content > :nth-child(1)").within(() => {
@@ -165,7 +165,7 @@ describe("Dashboard", () => {
     });
   });
 
-  it("verify that the Today's Task is functional", () => {
+  it("verify that the Today's Task is get expanded/collapsed when clicking on the arrow up or down button", () => {
     cy.get(".today-task").click();
     cy.get(".task-heading").should("have.text", "Today Tasks");
   });
@@ -178,7 +178,7 @@ describe("Dashboard", () => {
     cy.get(".task-heading").should("have.text", "Overdue Tasks");
   });
 
-  it("Todays task count", () => {
+  it("Verify if [Today tasks] count gets updated on adding/deleting tasks", () => {
     cy.get(".today-task h1")
       .invoke("text")
       .then((initialCount) => {
@@ -205,7 +205,7 @@ describe("Dashboard", () => {
       });
   });
 
-  it("Upcoming task count", () => {
+  it("Verify if [Upcoming tasks] count gets updated on adding/deleting tasks", () => {
     cy.get(".upcoming-task h1")
       .invoke("text")
       .then((initialCount) => {
@@ -234,7 +234,7 @@ describe("Dashboard", () => {
       });
   });
 
-  it.only("Overdue task count", () => {
+  it.only("Verify if [Overdue tasks] count gets updated on adding/deleting tasks", () => {
     cy.get(".overdue-task h1")
       .invoke("text")
       .then((initialCount) => {
