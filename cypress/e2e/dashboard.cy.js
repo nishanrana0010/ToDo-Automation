@@ -7,21 +7,6 @@ describe("Dashboard", () => {
     cy.visit("#action=150&cids=&menu_id=107");
   });
 
-  before(() => {
-    Cypress.on("uncaught:exception", (err) => {
-      Cypress.log({
-        name: "Uncaught Exception",
-        message: err.message,
-        consoleProps: () => ({
-          error: err,
-          message: err.message,
-          stack: err.stack,
-        }),
-      });
-      return false;
-    });
-  });
-
   it("Verify that empty list cannot be created.", () => {
     cy.get(".list-name-section").within(() => {
       cy.get(".create-list-btn").contains("Create New list").click();
@@ -52,7 +37,7 @@ describe("Dashboard", () => {
       .click()
       .within(() => {
         cy.get(".dots-div").click();
-        cy.get("#menuItemsList > ul").children().first().find(".btn").click();
+        cy.get("#menuItemsList > ul").children().eq(2).find(".btn").click();
       });
     cy.get("#listModalEdit").within(() => {
       cy.get('input[name="name-edit"]').clear();
@@ -67,7 +52,7 @@ describe("Dashboard", () => {
       cy.get("#menuItemsList")
         .children("ul")
         .children()
-        .eq(1)
+        .eq(2)
         .find(".btn")
         .click(); //changed
     });
@@ -148,11 +133,13 @@ describe("Dashboard", () => {
 
   it("Verify that task details can be deleted on clicking the [delete] button", () => {
     cy.get(".list-names").within(() => {
-      cy.get(":nth-child(1) > .accordion-header").click();
-      cy.get(".accordion-content > :nth-child(1)").within(() => {
+      cy.contains(".accordion-header", "Updated List").click();
+      cy.contains(".accordion-content", "any2").within(() => {
         cy.get(".dots-div").click();
-        cy.get("#menuItems > ul ")
-          .children(":nth-child(2)")
+        cy.get("#menuItems")
+          .children("ul")
+          .children()
+          .eq(1)
           .find(".btn")
           .click();
       });
@@ -258,6 +245,22 @@ describe("Dashboard", () => {
             const newTaskCount = parseInt(newCount);
             expect(newTaskCount).to.equal(initialTaskCount + 1);
           });
+      });
+  });
+
+  it.only("should mark task as complete when checkbox is clicked", () => {
+    cy.get(".task-names")
+      .first()
+      .within(() => {
+        // Find the checkbox for the task and click it
+        cy.get(
+          ":nth-child(1) > .checkbox-name > :nth-child(1) > .button-task"
+        ).click();
+
+        // Assert that the task is marked as complete in the High section
+        cy.get(
+          ".task-names > :nth-child(1) > .priority-box > .priority-high > p"
+        ).should("contain", "Completed");
       });
   });
 });
