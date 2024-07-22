@@ -1,3 +1,7 @@
+import { login } from "../support/LoginUtils";
+
+Cypress.Commands.add("login", login);
+
 describe("TODO App", () => {
   let credentials, urls;
   const validEmail = Cypress.env("validEmail");
@@ -97,10 +101,10 @@ describe("TODO App", () => {
     cy.get('form[role="form"]').within(() => {
       cy.get(".forgot-text")
         .contains("Forgot Password")
-        .should("be.visible")
         .click();
+    cy.url.should("include", urls.forgotPassword);
     });
-    // cy.url("include", urls.forgotPassword);
+
   });
 
   it("Verify that on clicking create new account link is clickable and redirects to create new account page", () => {
@@ -118,3 +122,6 @@ describe("TODO App", () => {
     cy.url("include", "/web#action=150&cids=1&menu_id=107");
   });
 });
+
+
+
