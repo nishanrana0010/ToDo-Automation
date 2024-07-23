@@ -67,7 +67,7 @@ describe("Dashboard", () => {
     });
   });
 
-  it.only("Verify that tasks can be created on filling the task form with valid credentials", () => {
+  it("Verify that tasks can be created on filling the task form with valid credentials", () => {
     cy.get(".date-section").within(() => {
       cy.get('div[class="create-task-btn"]')
         .contains("Create New Task")
@@ -246,7 +246,7 @@ describe("Dashboard", () => {
       });
   });
 
-  it.only("Verify that tasks can be marked as completed.", () => {
+  it("Verify that tasks can be marked as completed.", () => {
     cy.get(".task-list").within(() => {
       cy.contains(".form-check", "New2").within(() => {
         cy.get(".button-task").click();
