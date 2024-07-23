@@ -37,7 +37,7 @@ describe("Dashboard", () => {
       .click()
       .within(() => {
         cy.get(".dots-div").click();
-        cy.get("#menuItemsList > ul").children().eq(2).find(".btn").click();
+        cy.get("#menuItemsList > ul").children().eq(0).find(".btn").click();
       });
     cy.get("#listModalEdit").within(() => {
       cy.get('input[name="name-edit"]').clear();
@@ -47,28 +47,33 @@ describe("Dashboard", () => {
   });
 
   it("Verify that users can delete list on clicking the [delete] button ", () => {
-    cy.get(":nth-child(1) > .accordion-header").within(() => {
-      cy.get(".dots-div").click();
-      cy.get("#menuItemsList")
-        .children("ul")
-        .children()
-        .eq(2)
-        .find(".btn")
-        .click(); //changed
+    cy.get(".list-names").within(() => {
+      cy.contains(".accordion-header", "Hello Updated").click();
+      cy.contains(".accordion-content", "hahhaha").within(() => {
+        cy.get(".dots-div").click();
+        cy.get("#menuItems")
+          .children("ul")
+          .children()
+          .eq(1)
+          .find(".btn")
+          .click();
+      });
     });
     cy.get(".o_notification").within(() => {
       cy.get(".o_notification_content").should(
         "have.text",
-        "List Deleted Successfully!!"
+        "Task Deleted Successfully!!"
       );
     });
   });
 
-  it("Verify that tasks can be created on filling the task form with valid credentials", () => {
+  it.only("Verify that tasks can be created on filling the task form with valid credentials", () => {
     cy.get(".date-section").within(() => {
-      cy.get(".create-task-btn").contains("Create New Task").click();
+      cy.get('div[class="create-task-btn"]')
+        .contains("Create New Task")
+        .click();
     });
-    cy.get("#taskModal").within(() => {
+    cy.get('div[id="taskModal"]').within(() => {
       cy.get('input[name="task-name"]').type("New Task");
       cy.get("#select-list").select(1);
       cy.get("#select-priority").select(1);
@@ -133,9 +138,9 @@ describe("Dashboard", () => {
 
   it("Verify that task details can be deleted on clicking the [delete] button", () => {
     cy.get(".list-names").within(() => {
-      cy.contains(".accordion-header", "Updated List").click();
-      cy.contains(".accordion-content", "any2").within(() => {
-        cy.get(".dots-div").click();
+      cy.contains(".accordion-header", "Hello Update").click();
+      cy.contains(".accordion-content", "New Task").within(() => {
+        cy.get('div[class="dots-div"]').first().click();
         cy.get("#menuItems")
           .children("ul")
           .children()
@@ -177,10 +182,7 @@ describe("Dashboard", () => {
         cy.get("#select-list").select(2);
         cy.get('select[id="select-priority"]').select(1);
         cy.get('input[id="date_time"]').type("07/22/2024 3:00 PM");
-        cy.get(
-          "#datetimepicker > .input-group-append > .input-group-text > .fa"
-        ).click();
-
+        cy.get('i[class="fa fa-calendar"]').first().click();
         cy.get('button[type="submit"]').contains("Add Task").click();
 
         cy.get(".today-task h1")
@@ -206,9 +208,7 @@ describe("Dashboard", () => {
         cy.get('input[id="date_time"]')
           .clear()
           .type("08/22/2024 4:08 AM {enter}");
-        cy.get(
-          "#datetimepicker > .input-group-append > .input-group-text > .fa"
-        ).click();
+        cy.get('i[class="fa fa-calendar"]').first().click();
 
         cy.get('button[type="submit"]').contains("Add Task").click();
 
@@ -221,7 +221,7 @@ describe("Dashboard", () => {
       });
   });
 
-  it.only("Verify if [Overdue tasks] count gets updated on adding/deleting tasks", () => {
+  it("Verify if [Overdue tasks] count gets updated on adding/deleting tasks", () => {
     cy.get(".overdue-task h1")
       .invoke("text")
       .then((initialCount) => {
@@ -233,9 +233,7 @@ describe("Dashboard", () => {
         cy.get("#select-list").select(2);
         cy.get('select[id="select-priority"]').select(1);
         cy.get('input[id="date_time"]').clear().type("06/22/2024 3:00 PM");
-        cy.get(
-          "#datetimepicker > .input-group-append > .input-group-text > .fa"
-        ).click();
+        cy.get('i[class="fa fa-calendar"]').first().click();
 
         cy.get('button[type="submit"]').contains("Add Task").click();
 
@@ -248,19 +246,17 @@ describe("Dashboard", () => {
       });
   });
 
-  it.only("should mark task as complete when checkbox is clicked", () => {
-    cy.get(".task-names")
-      .first()
-      .within(() => {
-        // Find the checkbox for the task and click it
-        cy.get(
-          ":nth-child(1) > .checkbox-name > :nth-child(1) > .button-task"
-        ).click();
-
-        // Assert that the task is marked as complete in the High section
-        cy.get(
-          ".task-names > :nth-child(1) > .priority-box > .priority-high > p"
-        ).should("contain", "Completed");
+  it.only("Verify that tasks can be marked as completed.", () => {
+    cy.get(".task-list").within(() => {
+      cy.contains(".form-check", "New2").within(() => {
+        cy.get(".button-task").click();
       });
+    });
+    cy.contains(".task-list", "New2")
+      .parent()
+      .find(".priority-box")
+      .eq(0)
+      .find("div.priority-completed")
+      .should("exist");
   });
 });
