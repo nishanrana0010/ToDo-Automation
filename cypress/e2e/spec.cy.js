@@ -31,7 +31,7 @@ describe("TODO App", () => {
     cy.visit("/login");
   });
 
-  it("Verify if validation message is displayed when required field are left empty.", () => {
+  it("Verify if validation message is displayed when mandatory fields are left empty.", () => {
     cy.login("", "").then(() => {
       cy.get('input[type="text"]').then(($input) => {
         expect($input[0].validationMessage).to.eq(
@@ -41,7 +41,7 @@ describe("TODO App", () => {
     });
   });
 
-  it("Verify if the [Show password] icon is functional ", () => {
+  it("Verify if the [Password] visibility icon is functional ", () => {
     cy.get('form[role="form"]').within(() => {
       cy.get('input[name="password"]')
         .type("bajra")
@@ -64,7 +64,7 @@ describe("TODO App", () => {
     });
   });
 
-  it("Verify if users can to login with invalid credentials.", () => {
+  it("Verify that users cannot to login with invalid credentials.", () => {
     cy.login(credentials.invalidEmail, credentials.invalidPassword).then(() => {
       cy.get('form[role="form"]').within(() => {
         cy.get('p[role="alert"]').should(
@@ -97,17 +97,14 @@ describe("TODO App", () => {
     });
   });
 
-  it("Verify that on clicking forgot password link is clickable and redirects to forgot password page", () => {
+  it("Verify that forgot password link is clickable and redirects to [forgot password] page", () => {
     cy.get('form[role="form"]').within(() => {
-      cy.get(".forgot-text")
-        .contains("Forgot Password")
-        .click();
-    cy.url.should("include", urls.forgotPassword);
+      cy.get(".forgot-text").contains("Forgot Password").click();
+      cy.url.should("include", urls.forgotPassword);
     });
-
   });
 
-  it("Verify that on clicking create new account link is clickable and redirects to create new account page", () => {
+  it("Verify that create new account link is clickable and redirects to [create new account] page", () => {
     cy.get('form[role="form"]').within(() => {
       cy.get(".forgot-text")
         .contains("Create new account")
@@ -122,6 +119,3 @@ describe("TODO App", () => {
     cy.url("include", "/web#action=150&cids=1&menu_id=107");
   });
 });
-
-
-

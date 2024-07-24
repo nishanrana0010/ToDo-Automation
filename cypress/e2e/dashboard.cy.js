@@ -7,11 +7,11 @@ describe("Dashboard", () => {
     cy.visit("#action=150&cids=&menu_id=107");
   });
 
-  it("Verify that empty list cannot be created.", () => {
-    cy.get(".list-name-section").within(() => {
+  it("Verify that list cannot be created on leaving the mandatory fields empty", () => {
+    cy.get('div[class=".list-name-section"]').within(() => {
       cy.get(".create-list-btn").contains("Create New list").click();
     });
-    cy.get("#listModal").within(() => {
+    cy.get('div[id="listModal"]').within(() => {
       cy.get('button[type="submit"]').click();
     });
     cy.get(".o_technical_modal").within(() => {
@@ -67,7 +67,7 @@ describe("Dashboard", () => {
     });
   });
 
-  it("Verify that tasks can be created on filling the task form with valid credentials", () => {
+  it("Verify that tasks can be created on filling the [task] form with valid credentials", () => {
     cy.get(".date-section").within(() => {
       cy.get('div[class="create-task-btn"]')
         .contains("Create New Task")
@@ -105,7 +105,26 @@ describe("Dashboard", () => {
         .and("have.css", "display", "none");
     });
   });
+  //  it("Verify that the dashboard task view gets expanded/collapsed on clicking the down and up arrow", () => {
+  //     cy.get('div[class="list-section"]').within(() => {
+  //       cy.get(".list-names")
+  //         .children(".accordion-item")
+  //         .first()
+  //         .find(".accordion-header")
+  //         .click();
+  //       cy.get(".accordion-content")
+  //         .should("have.prop", "nodeName", "DIV")
+  //         .and("have.css", "display", "block");
 
+  //       cy.get(".list-names .accordion-item")
+  //         .eq(0)
+  //         .find(".accordion-header")
+  //         .click();
+  //       cy.get(".accordion-content")
+  //         .should("have.prop", "nodeName", "DIV")
+  //         .and("have.css", "display", "none");
+  //     });
+  //   });
   it("Verify that task details can be edited on clicking the [edit] button.", () => {
     cy.get(".list-names")
 
@@ -157,20 +176,20 @@ describe("Dashboard", () => {
     });
   });
 
-  it("verify that the Today's Task is get expanded/collapsed when clicking on the arrow up or down button", () => {
+  it("verify that Today's task card is functional", () => {
     cy.get(".today-task").click();
     cy.get(".task-heading").should("have.text", "Today Tasks");
   });
-  it("verify that the Upcoming Task is functional", () => {
+  it("verify that the Upcoming Task card is functional", () => {
     cy.get(".upcoming-task").click();
     cy.get(".task-heading").should("have.text", "Upcoming Tasks");
   });
-  it("verify that the Overdue Task is functional", () => {
+  it("verify that the Overdue Task card is functional", () => {
     cy.get(".overdue-task").click();
     cy.get(".task-heading").should("have.text", "Overdue Tasks");
   });
 
-  it("Verify if [Today tasks] count gets updated on adding/deleting tasks", () => {
+  it("Verify if [Today tasks] count gets updated on adding tasks", () => {
     cy.get(".today-task h1")
       .invoke("text")
       .then((initialCount) => {
@@ -194,7 +213,7 @@ describe("Dashboard", () => {
       });
   });
 
-  it("Verify if [Upcoming tasks] count gets updated on adding/deleting tasks", () => {
+  it("Verify if [Upcoming tasks] count gets updated on adding tasks", () => {
     cy.get(".upcoming-task h1")
       .invoke("text")
       .then((initialCount) => {
@@ -221,7 +240,7 @@ describe("Dashboard", () => {
       });
   });
 
-  it("Verify if [Overdue tasks] count gets updated on adding/deleting tasks", () => {
+  it("Verify if [Overdue tasks] count gets updated on adding tasks", () => {
     cy.get(".overdue-task h1")
       .invoke("text")
       .then((initialCount) => {
@@ -258,5 +277,30 @@ describe("Dashboard", () => {
       .eq(0)
       .find("div.priority-completed")
       .should("exist");
+  });
+
+  it("Verify if  [tasks] count gets updated on adding tasks", () => {
+    cy.get(".accordion-header p")
+      .invoke("text")
+      .then((initialCount) => {
+        const initialTaskCount = parseInt(initialCount);
+
+        cy.contains("Create New Task").click();
+
+        cy.get('input[id="task-name"]').clear().type("Overdue Date Task");
+        cy.get("#select-list").select(1);
+        cy.get('select[id="select-priority"]').select(1);
+        cy.get('input[id="date_time"]').clear().type("06/22/2024 3:00 PM");
+        cy.get('i[class="fa fa-calendar"]').first().click();
+
+        cy.get('button[type="submit"]').contains("Add Task").click();
+
+        cy.get(".accordion-header p")
+          .invoke("text")
+          .should((newCount) => {
+            const newTaskCount = parseInt(newCount);
+            expect(newTaskCount).to.equal(initialTaskCount + 1);
+          });
+      });
   });
 });
