@@ -7,18 +7,6 @@ describe("TODO App", () => {
   const validEmail = Cypress.env("validEmail");
   const validPassword = Cypress.env("validPassword");
   before(() => {
-    Cypress.on("uncaught:exception", (err) => {
-      Cypress.log({
-        name: "Uncaught Exception",
-        message: err.message,
-        consoleProps: () => ({
-          error: err,
-          message: err.message,
-          stack: err.stack,
-        }),
-      });
-      return false;
-    });
     cy.fixture("datas.json").then((data) => {
       credentials = data;
     });
@@ -100,7 +88,7 @@ describe("TODO App", () => {
   it("Verify that forgot password link is clickable and redirects to [forgot password] page", () => {
     cy.get('form[role="form"]').within(() => {
       cy.get(".forgot-text").contains("Forgot Password").click();
-      cy.url.should("include", urls.forgotPassword);
+      cy.url().should("include", urls.forgotPassword);
     });
   });
 

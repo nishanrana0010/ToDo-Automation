@@ -1,0 +1,25 @@
+{
+  "Null": "Null value",
+  "TaskUpdateMessage": "Updated Task",
+  "TaskDeleteMessage": "Task Deleted Successfully!!",
+  "ListUpdateMessage": "List  Edited!!",
+  "ListDeleteMessage": "List Deleted Successfully!!",
+
+  "ListName": "New List",
+  "EditList": "ACE List",
+
+  "TaskName": "New Task",
+  "UpdateTask": "Updated Task",
+
+  "TodayDate": "07/31/2024 5:00 PM",
+  "UpcomingDate": "08/31/2024 5:00 PM",
+  "OverdueDate": "06/31/2024 5:00 PM",
+
+  "TodayCard": "Today Tasks",
+  "UpcomingCard": "Upcoming Tasks",
+  "OverdueCard": "Overdue Tasks",
+
+  "NewTask": "New Date Task",
+  "UpcomingTask": "Upcoming Date Task",
+  "OverdueTask": "Overdue Date Task"
+}
