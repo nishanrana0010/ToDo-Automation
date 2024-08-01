@@ -16,14 +16,14 @@ describe("TODO App", () => {
     });
   });
   beforeEach(() => {
-    cy.visit("/login");
+    cy.visit(urls.LoginUrl);
   });
 
   it("Verify if validation message is displayed when mandatory fields are left empty.", () => {
     cy.login("", "").then(() => {
       cy.get('input[type="text"]').then(($input) => {
         expect($input[0].validationMessage).to.eq(
-          "Please fill out this field."
+          credentials.EmptyvalidationMessage
         );
       });
     });
@@ -32,7 +32,7 @@ describe("TODO App", () => {
   it("Verify if the [Password] visibility icon is functional ", () => {
     cy.get('form[role="form"]').within(() => {
       cy.get('input[name="password"]')
-        .type("bajra")
+        .type(credentials.UsernameMock)
         .should("have.prop", "nodeName", "INPUT")
         .and("have.attr", "type", "password");
 
@@ -42,7 +42,7 @@ describe("TODO App", () => {
         .should("have.prop", "nodeName", "INPUT")
         .and("have.attr", "type", "text");
 
-      cy.get('input[name="password"]').type("Hello");
+      cy.get('input[name="password"]').type(credentials.PasswordMock);
 
       cy.get(".toggle-password").click();
 
@@ -57,7 +57,7 @@ describe("TODO App", () => {
       cy.get('form[role="form"]').within(() => {
         cy.get('p[role="alert"]').should(
           "contain.text",
-          "Wrong login/password"
+          credentials.WrongValidationMessage
         );
       });
 
@@ -68,7 +68,7 @@ describe("TODO App", () => {
         cy.get('form[role="form"]').within(() => {
           cy.get('p[role="alert"]').should(
             "contain.text",
-            "Wrong login/password"
+            credentials.WrongValidationMessage
           );
         });
       });
@@ -79,7 +79,7 @@ describe("TODO App", () => {
       cy.login(credentials.invalidEmail, validPassword).then(() => {
         cy.get('p[role="alert"]').should(
           "contain.text",
-          "Wrong login/password"
+          credentials.WrongValidationMessage
         );
       });
     });
@@ -104,6 +104,6 @@ describe("TODO App", () => {
 
   it("Verify if  the users can login with valid credentials.", () => {
     cy.login(validEmail, validPassword);
-    cy.url("include", "/web#action=150&cids=1&menu_id=107");
+    cy.url("include", urls.DashboardUrl);
   });
 });

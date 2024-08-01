@@ -1,5 +1,6 @@
 {
 "signup":"/signup",
 "forgotPassword":"/forgotPassword",
-"DashboardUrl":"#action=150&cids=&menu_id=107"
+"DashboardUrl":"#action=150&cids=&menu_id=107",
+"LoginUrl":"/login"
 }

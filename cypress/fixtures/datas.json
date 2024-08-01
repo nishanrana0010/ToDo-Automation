@@ -1,5 +1,8 @@
 {
 "invalidEmail":"Hello",
-"invalidPassword":"Hello"
-
+"invalidPassword":"Hello",
+"EmptyvalidationMessage":"Please fill out this field.",
+"WrongValidationMessage":"Wrong login/password",
+"PasswordMock":"Password",
+"UsernameMock":"happy@gmail.com"
 }

@@ -72,15 +72,24 @@ describe("Dashboard", () => {
   });
 
   it("Verify that users can delete list on clicking the [delete] button ", () => {
+    cy.get('div[class="list-title"]').within(() => {
+      cy.get(".create-list-btn").contains("Create New list").click();
+    });
+    cy.get('div[id="listModal"]').within(() => {
+      cy.get('input[name="name"]').type(dashboard.ListName);
+      cy.get('button[type="submit"]').click();
+    });
     cy.get('div[class="list-section"]').within(() => {
       cy.get(".list-names")
         .find(".accordion-header", dashboard.ListName)
         .eq(1)
         .within(() => {
           cy.get('div[class="dots-div"]').click();
-          cy.get('div[id="menuItemsList"]').within(() => {
-            cy.get('button[class="btn btn-primary delete-list-btn"]').click();
-          });
+          cy.get('div[id="menuItemsList"]')
+            .invoke("css", "display", "block")
+            .within(() => {
+              cy.get('button[class="btn btn-primary delete-list-btn"]').click();
+            });
         });
     });
     cy.get('div[class="o_notification_manager"]')
@@ -176,20 +185,35 @@ describe("Dashboard", () => {
   });
 
   it("Verify that task can be deleted on clicking the [delete] button", () => {
+    cy.get('div[class="date-section"]').within(() => {
+      cy.get('button[class="btn btn-primary create-task-btn"]')
+        .contains("Create New Task")
+        .click();
+    });
+    cy.get('div[id="taskModal"]').within(() => {
+      cy.get('input[name="task-name"]').type(dashboard.TaskName);
+      cy.get("#select-list").select(1);
+      cy.get("#select-priority").select(1);
+      cy.get('input[name="datetime"]')
+        .clear()
+        .type(dashboard.TodayDate)
+        .click();
+      cy.get('button[type="submit"]').click();
+    });
     cy.get('div[class="list-names"]').within(() => {
-      cy.contains('div[class="accordion-header"]', "ACE List").click();
-      cy.contains(
-        'div[class="accordion-content"]',
-        dashboard.UpdateTask
-      ).within(() => {
-        cy.get('div[class="dots-div"]').first().click();
-        cy.get('div[id="menuItems"]')
-          .children("ul")
-          .children()
-          .eq(1)
-          .find(".btn")
-          .click();
-      });
+      cy.contains('div[class="accordion-header"]', dashboard.EditList).click();
+      cy.contains('div[class="accordion-content"]', dashboard.TaskName)
+        .invoke("css", "display", "block")
+        .within(() => {
+          cy.get('div[class="dots-div"]').first().click();
+          cy.get('div[id="menuItems"]')
+            .invoke("css", "display", "block")
+            .children("ul")
+            .children()
+            .eq(1)
+            .find(".btn")
+            .click();
+        });
     });
     cy.get(".o_notification").within(() => {
       cy.get(".o_notification_content").should(
